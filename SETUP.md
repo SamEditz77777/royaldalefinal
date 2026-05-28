@@ -73,3 +73,49 @@ Open the URL shown in the terminal (usually **http://localhost:5173**).
 npm run build
 npm run preview
 ```
+
+---
+
+## Git (version control)
+
+This project is a Git repo at:
+
+`Downloads\royaldale-main\royaldale-main`
+
+**Initial commit is done** on branch `main` (34 files; `node_modules` is ignored).
+
+### One-time: set your Git identity
+
+In any terminal:
+
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
+
+### Push to GitHub
+
+Replace with your actual repo URL:
+
+```powershell
+cd $env:USERPROFILE\Downloads\royaldale-main\royaldale-main
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+```
+
+If the GitHub repo already has commits, you may need:
+
+```powershell
+git pull origin main --allow-unrelated-histories
+git push -u origin main
+```
+
+### After you edit the site
+
+```powershell
+git add .
+git commit -m "Describe your change"
+git push
+```
+
+In Cursor: open folder `royaldale-main\royaldale-main` → **Source Control** panel to see changes.
