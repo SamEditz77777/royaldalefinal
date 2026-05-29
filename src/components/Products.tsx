@@ -33,7 +33,7 @@ const products = [
     name: 'Gel Coated Doors',
     description: 'High-gloss gel-coated doors with a sleek finish for premium interiors.',
     tag: 'Premium',
-    image: 'public/image.png',
+    image: 'image.png',
   },
   {
     name: 'Laminates',
