@@ -2,9 +2,9 @@ import { Ruler } from 'lucide-react';
 
 const sizes = [
   { height: '80 in', width: '32 in', use: 'Standard Interior' },
-  { height: '80.25 in', width: '32.5 in', use: 'Interior Plus' },
+  { height: '82 in', width: '34 in', use: 'Interior Plus' },
   { height: '78 in', width: '30 in', use: 'Compact Interior' },
-  { height: '78.75 in', width: '33.5 in', use: 'Wide Compact' },
+  { height: '78 in', width: '32 in', use: 'Wide Compact' },
   { height: '82 in', width: '36 in', use: 'Entry / Commercial' },
 ];
 

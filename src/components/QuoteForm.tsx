@@ -33,7 +33,8 @@ const productOptions = [
   { id: 'lipping', label: 'Lipping Patti', icon: AlignJustify },
 ];
 
-const finishOptions = ['Woodgrain', 'Matte', 'Gloss', 'Texture', 'Plain', 'Custom'];
+const finishOptions = ['Woodgrain', 'Matte', 'High Gloss', 'Texture', 'Plain', 'Custom'];
+const fractionOptions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8'];
 const projectTypeOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Other'];
 const timelineOptions = ['Immediate (1-2 weeks)', 'Soon (2-4 weeks)', 'Planning (1-3 months)', 'Future (3+ months)'];
 
@@ -42,8 +43,11 @@ interface DoorItem {
   product: string;
   quantity: number;
   heightInch: number;
+  heightFraction: string;
   widthInch: number;
+  widthFraction: string;
   finish: string;
+  color: string;
   customDesign: string;
   notes: string;
 }
@@ -53,8 +57,11 @@ const emptyDoor = (): DoorItem => ({
   product: '',
   quantity: 0,
   heightInch: 0,
+  heightFraction: '',
   widthInch: 0,
+  widthFraction: '',
   finish: '',
+  color: '',
   customDesign: '',
   notes: '',
 });
@@ -65,7 +72,12 @@ const validateDoorItems = (items: DoorItem[]): Record<string, string> => {
     const key = (field: string) => `door-${door.id}-${field}`;
     if (!door.product.trim()) doorErrors[key('product')] = 'Product is required';
     if (!door.quantity || door.quantity < 1) doorErrors[key('quantity')] = 'Quantity is required (minimum 1)';
-    if (!door.finish.trim()) doorErrors[key('finish')] = 'Finish is required';
+    const needsColor = door.product === 'FRP Doors' || door.product === 'PVC Doors';
+    if (needsColor) {
+      if (!door.color.trim()) doorErrors[key('color')] = 'Color is required';
+    } else if (!door.finish.trim()) {
+      doorErrors[key('finish')] = 'Finish is required';
+    }
     if (!door.heightInch || door.heightInch <= 0) doorErrors[key('height')] = 'Height is required';
     if (!door.widthInch || door.widthInch <= 0) doorErrors[key('width')] = 'Width is required';
   });
@@ -167,12 +179,20 @@ export default function QuoteForm() {
     lines.push('');
     lines.push('*Specifications (all sizes in inches)*');
     doors.forEach((d, i) => {
+      const heightLabel = `${d.heightInch}${d.heightFraction ? ` ${d.heightFraction}` : ''}"`;
+      const widthLabel = `${d.widthInch}${d.widthFraction ? ` ${d.widthFraction}` : ''}"`;
+      const needsColor = d.product === 'FRP Doors' || d.product === 'PVC Doors';
+
       lines.push(`${i + 1}. ${d.product}`);
       lines.push(`   Quantity: ${d.quantity}`);
-      lines.push(`   Height: ${d.heightInch}"`);
-      lines.push(`   Width: ${d.widthInch}"`);
-      lines.push(`   Finish: ${d.finish}`);
-      if (d.customDesign.trim()) lines.push(`   Custom Design: ${d.customDesign}`);
+      lines.push(`   Height: ${heightLabel}`);
+      lines.push(`   Width: ${widthLabel}`);
+      if (needsColor) {
+        lines.push(`   Color: ${d.color}`);
+      } else {
+        lines.push(`   Finish: ${d.finish}`);
+      }
+      if (d.customDesign.trim() && d.product !== 'Laminate Doors') lines.push(`   Custom Design: ${d.customDesign}`);
       if (d.notes.trim()) lines.push(`   Notes: ${d.notes}`);
     });
     lines.push('');
@@ -494,47 +514,72 @@ export default function QuoteForm() {
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">
-                        Finish <span className="text-red-500">*</span>
+                        {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? 'Color' : 'Finish'} <span className="text-red-500">*</span>
                       </label>
-                      <select
-                        required
-                        value={door.finish}
-                        onChange={(e) => updateDoor(door.id, 'finish', e.target.value)}
-                        className={selectCls(errors[`door-${door.id}-finish`])}
-                      >
-                        <option value="">Select finish</option>
-                        {finishOptions.map((f) => (
-                          <option key={f} value={f}>
-                            {f}
-                          </option>
-                        ))}
-                      </select>
-                      {errors[`door-${door.id}-finish`] && (
-                        <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-finish`]}</p>
+                      {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? (
+                        <input
+                          type="text"
+                          placeholder="Enter color"
+                          value={door.color}
+                          onChange={(e) => updateDoor(door.id, 'color', e.target.value)}
+                          className={inputCls(errors[`door-${door.id}-color`])}
+                        />
+                      ) : (
+                        <select
+                          required
+                          value={door.finish}
+                          onChange={(e) => updateDoor(door.id, 'finish', e.target.value)}
+                          className={selectCls(errors[`door-${door.id}-finish`])}
+                        >
+                          <option value="">Select finish</option>
+                          {finishOptions.map((f) => (
+                            <option key={f} value={f}>
+                              {f}
+                            </option>
+                          ))}
+                        </select>
                       )}
+                      {(door.product === 'FRP Doors' || door.product === 'PVC Doors') ? errors[`door-${door.id}-color`] : errors[`door-${door.id}-finish`] ? (
+                        <p className="text-red-500 text-xs mt-1">
+                          {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? errors[`door-${door.id}-color`] : errors[`door-${door.id}-finish`]}
+                        </p>
+                      ) : null}
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Height (in) <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="number"
-                        required
-                        min="0.25"
-                        step="0.25"
-                        inputMode="decimal"
-                        placeholder="e.g. 80"
-                        value={door.heightInch || ''}
-                        onChange={(e) => {
-                          const raw = e.target.value;
-                          updateDoor(
-                            door.id,
-                            'heightInch',
-                            raw === '' ? 0 : Math.max(0, parseFloat(raw) || 0),
-                          );
-                        }}
-                        className={inputCls(errors[`door-${door.id}-height`])}
-                      />
+                      <div className="flex gap-2">
+                        <select
+                          value={door.heightFraction}
+                          onChange={(e) => updateDoor(door.id, 'heightFraction', e.target.value)}
+                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
+                        >
+                          {fractionOptions.map((value) => (
+                            <option key={value} value={value}>
+                              {value || '0'}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="number"
+                          required
+                          min="0"
+                          step="0.25"
+                          inputMode="decimal"
+                          placeholder="e.g. 80"
+                          value={door.heightInch || ''}
+                          onChange={(e) => {
+                            const raw = e.target.value;
+                            updateDoor(
+                              door.id,
+                              'heightInch',
+                              raw === '' ? 0 : Math.max(0, parseFloat(raw) || 0),
+                            );
+                          }}
+                          className={`${inputCls(errors[`door-${door.id}-height`])} flex-1`}
+                        />
+                      </div>
                       {errors[`door-${door.id}-height`] && (
                         <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-height`]}</p>
                       )}
@@ -543,38 +588,53 @@ export default function QuoteForm() {
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Width (in) <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="number"
-                        required
-                        min="0.25"
-                        step="0.25"
-                        inputMode="decimal"
-                        placeholder="e.g. 32"
-                        value={door.widthInch || ''}
-                        onChange={(e) => {
-                          const raw = e.target.value;
-                          updateDoor(
-                            door.id,
-                            'widthInch',
-                            raw === '' ? 0 : Math.max(0, parseFloat(raw) || 0),
-                          );
-                        }}
-                        className={inputCls(errors[`door-${door.id}-width`])}
-                      />
+                      <div className="flex gap-2">
+                        <select
+                          value={door.widthFraction}
+                          onChange={(e) => updateDoor(door.id, 'widthFraction', e.target.value)}
+                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
+                        >
+                          {fractionOptions.map((value) => (
+                            <option key={value} value={value}>
+                              {value || '0'}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="number"
+                          required
+                          min="0"
+                          step="0.25"
+                          inputMode="decimal"
+                          placeholder="e.g. 32"
+                          value={door.widthInch || ''}
+                          onChange={(e) => {
+                            const raw = e.target.value;
+                            updateDoor(
+                              door.id,
+                              'widthInch',
+                              raw === '' ? 0 : Math.max(0, parseFloat(raw) || 0),
+                            );
+                          }}
+                          className={`${inputCls(errors[`door-${door.id}-width`])} flex-1`}
+                        />
+                      </div>
                       {errors[`door-${door.id}-width`] && (
                         <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-width`]}</p>
                       )}
                     </div>
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">Custom Design</label>
-                      <input
-                        type="text"
-                        placeholder="Describe custom design, if any"
-                        value={door.customDesign}
-                        onChange={(e) => updateDoor(door.id, 'customDesign', e.target.value)}
-                        className={inputCls()}
-                      />
-                    </div>
+                    {!['Laminate Doors'].includes(door.product) && (
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-medium text-secondary-600 mb-1.5">Custom Design</label>
+                        <input
+                          type="text"
+                          placeholder="Describe custom design, if any"
+                          value={door.customDesign}
+                          onChange={(e) => updateDoor(door.id, 'customDesign', e.target.value)}
+                          className={inputCls()}
+                        />
+                      </div>
+                    )}
                     <div className="sm:col-span-2">
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">Notes</label>
                       <input

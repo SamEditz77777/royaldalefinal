@@ -18,8 +18,8 @@ const features = [
   },
   {
     icon: Truck,
-    title: 'Pan-India Shipping',
-    description: 'Safe delivery across India with protective packaging for large panels.',
+    title: 'Reliable Delivery',
+    description: 'Safe delivery across India with protective packaging and on-time dispatch.',
   },
   {
     icon: Headphones,
@@ -28,8 +28,8 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: 'Warranty Backed',
-    description: 'All products carry manufacturer warranties for your peace of mind.',
+    title: 'Trusted Service',
+    description: 'Post-sale care and support for every customer, every order.',
   },
 ];
 
