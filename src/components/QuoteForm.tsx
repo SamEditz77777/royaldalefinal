@@ -100,8 +100,7 @@ export default function QuoteForm() {
     const newErrors: Record<string, string> = {};
     if (s === 0) {
       if (!contact.name.trim()) newErrors.name = 'Name is required';
-      if (!contact.email.trim()) newErrors.email = 'Email is required';
-      else if (!/\S+@\S+\.\S+/.test(contact.email)) newErrors.email = 'Valid email required';
+      if (contact.email.trim() && !/\S+@\S+\.\S+/.test(contact.email)) newErrors.email = 'Valid email required';
       if (!contact.phone.trim()) newErrors.phone = 'Phone is required';
     }
     if (s === 1 && selectedProducts.length === 0) newErrors.products = 'Select at least one product';
@@ -117,8 +116,7 @@ export default function QuoteForm() {
   const validateAll = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!contact.name.trim()) newErrors.name = 'Name is required';
-    if (!contact.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(contact.email)) newErrors.email = 'Valid email required';
+    if (contact.email.trim() && !/\S+@\S+\.\S+/.test(contact.email)) newErrors.email = 'Valid email required';
     if (!contact.phone.trim()) newErrors.phone = 'Phone is required';
     if (selectedProducts.length === 0) newErrors.products = 'Select at least one product';
     const doorErrors = validateDoorItems(doors);
@@ -364,7 +362,7 @@ export default function QuoteForm() {
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
-                    Email *
+                    Email
                   </label>
                   <div className="relative">
                     <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
@@ -550,17 +548,6 @@ export default function QuoteForm() {
                         Height (in) <span className="text-red-500">*</span>
                       </label>
                       <div className="flex gap-2">
-                        <select
-                          value={door.heightFraction}
-                          onChange={(e) => updateDoor(door.id, 'heightFraction', e.target.value)}
-                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
-                        >
-                          {fractionOptions.map((value) => (
-                            <option key={value} value={value}>
-                              {value || '0'}
-                            </option>
-                          ))}
-                        </select>
                         <input
                           type="number"
                           required
@@ -579,6 +566,17 @@ export default function QuoteForm() {
                           }}
                           className={`${inputCls(errors[`door-${door.id}-height`])} flex-1`}
                         />
+                        <select
+                          value={door.heightFraction}
+                          onChange={(e) => updateDoor(door.id, 'heightFraction', e.target.value)}
+                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
+                        >
+                          {fractionOptions.map((value) => (
+                            <option key={value} value={value}>
+                              {value || '0'}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       {errors[`door-${door.id}-height`] && (
                         <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-height`]}</p>
@@ -589,17 +587,6 @@ export default function QuoteForm() {
                         Width (in) <span className="text-red-500">*</span>
                       </label>
                       <div className="flex gap-2">
-                        <select
-                          value={door.widthFraction}
-                          onChange={(e) => updateDoor(door.id, 'widthFraction', e.target.value)}
-                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
-                        >
-                          {fractionOptions.map((value) => (
-                            <option key={value} value={value}>
-                              {value || '0'}
-                            </option>
-                          ))}
-                        </select>
                         <input
                           type="number"
                           required
@@ -618,6 +605,17 @@ export default function QuoteForm() {
                           }}
                           className={`${inputCls(errors[`door-${door.id}-width`])} flex-1`}
                         />
+                        <select
+                          value={door.widthFraction}
+                          onChange={(e) => updateDoor(door.id, 'widthFraction', e.target.value)}
+                          className="w-24 bg-white border border-warm rounded-xl px-3 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all"
+                        >
+                          {fractionOptions.map((value) => (
+                            <option key={value} value={value}>
+                              {value || '0'}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       {errors[`door-${door.id}-width`] && (
                         <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-width`]}</p>

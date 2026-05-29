@@ -65,7 +65,7 @@ export default function WhyChooseUs() {
               />
             </div>
             <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-soft px-6 py-4 border border-warm">
-              <div className="font-serif text-3xl font-bold text-secondary-600">6+</div>
+              <div className="font-serif text-3xl font-bold text-secondary-600">8+</div>
               <div className="text-xs text-secondary-600">Years Experience</div>
             </div>
           </div>
