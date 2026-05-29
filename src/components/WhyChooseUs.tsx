@@ -57,12 +57,23 @@ export default function WhyChooseUs() {
 
           <div className="relative">
             <div className="rounded-2xl overflow-hidden shadow-warm aspect-[4/3]">
-              <img
-                src="public/whyus.png"
-                alt="Royal Dale production"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+              <div
+  style={{
+    width: '500px',
+    height: '500px',
+    border: '3px solid red',
+  }}
+>
+  <img
+    src="/whyus.png"
+    alt="Why Us"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+    }}
+  />
+</div>
             </div>
             <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-soft px-6 py-4 border border-warm">
               <div className="font-serif text-3xl font-bold text-secondary-600">6+</div>
