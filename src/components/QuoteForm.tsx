@@ -78,6 +78,8 @@ export default function QuoteForm() {
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
 
   const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '' });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -191,54 +193,138 @@ export default function QuoteForm() {
     window.open(whatsappUrl(message), '_blank');
   };
 
+  const submitQuoteViaAPI = async () => {
+    if (!validateStep(3)) return;
+
+    setIsSubmitting(true);
+    setSubmissionError('');
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/quote/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contact,
+          selectedProducts,
+          doors,
+          project,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to submit quote');
+      }
+
+      setSubmitted(true);
+      // Reset form after successful submission
+      setTimeout(() => {
+        setSubmitted(false);
+        setStep(0);
+        setContact({ name: '', company: '', email: '', phone: '' });
+        setSelectedProducts([]);
+        setDoors([emptyDoor()]);
+        setProject({ type: '', timeline: '', notes: '' });
+        setSubmissionError('');
+      }, 3000);
+    } catch (error) {
+      setSubmissionError(
+        error instanceof Error
+          ? error.message
+          : 'An error occurred. Please try WhatsApp instead.',
+      );
+      console.error('Quote submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const inputCls = (err?: string) =>
-    `w-full bg-white border rounded-xl px-4 py-3 text-brown-800 placeholder-brown-600/50 text-sm focus:outline-none focus:border-bronze-400 focus:ring-1 focus:ring-bronze-400/30 transition-all ${
+    `w-full bg-white border rounded-xl px-4 py-3 text-secondary-800 placeholder-secondary-600/50 text-sm focus:outline-none focus:border-secondary-400 focus:ring-1 focus:ring-secondary-400/30 transition-all ${
       err ? 'border-red-400' : 'border-warm'
     }`;
 
   const selectCls = (err?: string) =>
-    `w-full bg-white border rounded-xl px-4 py-3 text-brown-800 text-sm focus:outline-none focus:border-bronze-400 transition-all ${
+    `w-full bg-white border rounded-xl px-4 py-3 text-secondary-800 text-sm focus:outline-none focus:border-secondary-400 transition-all ${
       err ? 'border-red-400' : 'border-warm'
     }`;
 
   if (submitted) {
     return (
-      <section id="quote" className="py-24 px-4 sm:px-6 lg:px-8 bg-beige-100">
-        <div className="max-w-xl mx-auto text-center">
-          <div className="w-16 h-16 rounded-full bg-bronze-400/15 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle size={32} className="text-bronze-600" />
+      <section id="quote" className="py-24 px-4 sm:px-6 lg:px-8 bg-primary-100">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl border border-warm shadow-soft p-8 sm:p-12">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle size={32} className="text-green-600" />
+              </div>
+              <h2 className="font-serif text-3xl font-bold text-secondary-900 mb-3">Quote Request Submitted! ✅</h2>
+              <p className="text-secondary-600 mb-4">
+                Thank you, <strong>{contact.name}</strong>!
+              </p>
+            </div>
+
+            <div className="space-y-4 mb-8 bg-primary-50 rounded-xl p-6">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">📧</div>
+                <div>
+                  <p className="font-semibold text-secondary-800">Email Confirmation Sent</p>
+                  <p className="text-sm text-secondary-600">A confirmation email has been sent to <strong>{contact.email}</strong></p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">💾</div>
+                <div>
+                  <p className="font-semibold text-secondary-800">Quote Saved in Database</p>
+                  <p className="text-sm text-secondary-600">Your quote details are securely stored in our system</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">📞</div>
+                <div>
+                  <p className="font-semibold text-secondary-800">We'll Contact You Soon</p>
+                  <p className="text-sm text-secondary-600">Our team will reach out within <strong>24 hours</strong> at <strong>{contact.phone}</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+              <p className="text-sm text-blue-800">
+                <strong>Pro Tip:</strong> You can also use WhatsApp for immediate assistance. Save this number: <strong>+91 9697830830</strong>
+              </p>
+            </div>
+
+            <div className="text-center">
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  setStep(0);
+                  setContact({ name: '', company: '', email: '', phone: '' });
+                  setSelectedProducts([]);
+                  setDoors([emptyDoor()]);
+                  setProject({ type: '', timeline: '', notes: '' });
+                }}
+                className="px-8 py-3 rounded-full font-semibold text-white gradient-secondary hover:opacity-90 transition-all"
+              >
+                Submit Another Quote
+              </button>
+            </div>
           </div>
-          <h2 className="font-serif text-3xl font-bold text-brown-900 mb-4">Quote Request Sent!</h2>
-          <p className="text-brown-600 mb-8 leading-relaxed">
-            Thank you, {contact.name}! Our team will contact you within 24 hours at {contact.email}.
-          </p>
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setStep(0);
-              setContact({ name: '', company: '', email: '', phone: '' });
-              setSelectedProducts([]);
-              setDoors([emptyDoor()]);
-              setProject({ type: '', timeline: '', notes: '' });
-            }}
-            className="px-8 py-3 rounded-full font-semibold text-white gradient-gold hover:opacity-90 transition-all"
-          >
-            Submit Another Quote
-          </button>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="quote" className="py-24 px-4 sm:px-6 lg:px-8 bg-beige-100">
+    <section id="quote" className="py-24 px-4 sm:px-6 lg:px-8 bg-primary-100">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14">
-          <p className="text-bronze-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Get a Quote</p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-brown-900 mb-5">
+          <p className="text-secondary-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Get a Quote</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-secondary-900 mb-5">
             Request Custom Quote
           </h2>
-          <p className="text-brown-600 text-lg leading-relaxed">
+          <p className="text-secondary-600 text-lg leading-relaxed">
             Complete the form below and we&apos;ll respond within 24 hours.
           </p>
         </div>
@@ -249,17 +335,17 @@ export default function QuoteForm() {
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold ${
                   i < step
-                    ? 'bg-bronze-500 text-white'
+                    ? 'bg-secondary-500 text-white'
                     : i === step
-                      ? 'bg-bronze-500/15 text-bronze-700 border-2 border-bronze-400'
-                      : 'bg-beige-200 text-brown-600/50'
+                      ? 'bg-secondary-500/15 text-secondary-700 border-2 border-secondary-400'
+                      : 'bg-primary-200 text-secondary-600/50'
                 }`}
               >
                 {i < step ? <CheckCircle size={14} /> : i + 1}
               </div>
-              <span className="ml-2 text-xs font-medium text-brown-600 hidden sm:block">{label}</span>
+              <span className="ml-2 text-xs font-medium text-secondary-600 hidden sm:block">{label}</span>
               {i < 3 && (
-                <div className={`w-6 sm:w-10 h-0.5 mx-1 sm:mx-2 ${i < step ? 'bg-bronze-500' : 'bg-beige-300'}`} />
+                <div className={`w-6 sm:w-10 h-0.5 mx-1 sm:mx-2 ${i < step ? 'bg-secondary-500' : 'bg-primary-300'}`} />
               )}
             </div>
           ))}
@@ -268,14 +354,14 @@ export default function QuoteForm() {
         <div className="bg-white rounded-2xl border border-warm shadow-soft overflow-hidden">
           {step === 0 && (
             <div className="p-6 sm:p-10">
-              <h3 className="font-serif text-xl font-bold text-brown-900 mb-6">Contact Information</h3>
+              <h3 className="font-serif text-xl font-bold text-secondary-900 mb-6">Contact Information</h3>
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
                     Full Name *
                   </label>
                   <div className="relative">
-                    <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brown-600/40" />
+                    <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
                     <input
                       type="text"
                       placeholder="Your name"
@@ -290,11 +376,11 @@ export default function QuoteForm() {
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
                     Company
                   </label>
                   <div className="relative">
-                    <Building size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brown-600/40" />
+                    <Building size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
                     <input
                       type="text"
                       placeholder="Company name"
@@ -305,11 +391,11 @@ export default function QuoteForm() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
                     Email *
                   </label>
                   <div className="relative">
-                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brown-600/40" />
+                    <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
                     <input
                       type="email"
                       placeholder="you@example.com"
@@ -324,11 +410,11 @@ export default function QuoteForm() {
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
                     Phone *
                   </label>
                   <div className="relative">
-                    <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brown-600/40" />
+                    <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
                     <input
                       type="tel"
                       placeholder="+91 9697830830"
@@ -348,7 +434,7 @@ export default function QuoteForm() {
 
           {step === 1 && (
             <div className="p-6 sm:p-10">
-              <h3 className="font-serif text-xl font-bold text-brown-900 mb-6">Select Products</h3>
+              <h3 className="font-serif text-xl font-bold text-secondary-900 mb-6">Select Products</h3>
               {errors.products && <p className="text-red-500 text-sm mb-4">{errors.products}</p>}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {productOptions.map(({ id, label, icon: Icon }) => {
@@ -360,20 +446,20 @@ export default function QuoteForm() {
                       onClick={() => toggleProduct(id)}
                       className={`flex flex-col items-center gap-2 p-4 rounded-xl border text-center transition-all ${
                         selected
-                          ? 'border-bronze-400 bg-bronze-400/10'
-                          : 'border-warm bg-ivory-50 hover:border-bronze-300'
+                          ? 'border-secondary-400 bg-secondary-400/10'
+                          : 'border-warm bg-primary-50 hover:border-secondary-300'
                       }`}
                     >
                       <div
-                        className={`w-10 h-10 rounded-lg flex items-center justify-center ${selected ? 'bg-bronze-500/20' : 'bg-beige-200'}`}
+                        className={`w-10 h-10 rounded-lg flex items-center justify-center ${selected ? 'bg-secondary-500/20' : 'bg-primary-200'}`}
                       >
-                        <Icon size={18} className={selected ? 'text-bronze-600' : 'text-brown-600/50'} />
+                        <Icon size={18} className={selected ? 'text-secondary-600' : 'text-secondary-600/50'} />
                       </div>
-                      <span className={`text-xs font-medium ${selected ? 'text-bronze-700' : 'text-brown-600'}`}>
+                      <span className={`text-xs font-medium ${selected ? 'text-secondary-700' : 'text-secondary-600'}`}>
                         {label}
                       </span>
                       {selected && (
-                        <div className="w-5 h-5 rounded-full bg-bronze-500 flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-full bg-secondary-500 flex items-center justify-center">
                           <CheckCircle size={12} className="text-white" />
                         </div>
                       )}
@@ -381,25 +467,25 @@ export default function QuoteForm() {
                   );
                 })}
               </div>
-              <p className="text-xs text-brown-600 mt-4">{selectedProducts.length} product(s) selected</p>
+              <p className="text-xs text-secondary-600 mt-4">{selectedProducts.length} product(s) selected</p>
             </div>
           )}
 
           {step === 2 && (
             <div className="p-6 sm:p-10">
-              <h3 className="font-serif text-xl font-bold text-brown-900 mb-2">Specifications</h3>
-              <p className="text-sm text-brown-600 mb-2">All dimensions in inches only (height × width).</p>
-              <p className="text-xs text-brown-600/80 mb-6">Fields marked with * are required.</p>
+              <h3 className="font-serif text-xl font-bold text-secondary-900 mb-2">Specifications</h3>
+              <p className="text-sm text-secondary-600 mb-2">All dimensions in inches only (height × width).</p>
+              <p className="text-xs text-secondary-600/80 mb-6">Fields marked with * are required.</p>
 
               {doors.map((door, idx) => (
-                <div key={door.id} className="bg-ivory-50 rounded-xl p-5 mb-4 border border-warm">
+                <div key={door.id} className="bg-primary-50 rounded-xl p-5 mb-4 border border-warm">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold text-brown-800">Item #{idx + 1}</span>
+                    <span className="text-sm font-semibold text-secondary-800">Item #{idx + 1}</span>
                     {doors.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeDoor(door.id)}
-                        className="text-brown-600/50 hover:text-red-500 p-1"
+                        className="text-secondary-600/50 hover:text-red-500 p-1"
                         aria-label="Remove item"
                       >
                         <Trash2 size={16} />
@@ -409,7 +495,7 @@ export default function QuoteForm() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Product <span className="text-red-500">*</span>
                       </label>
                       <select
@@ -430,7 +516,7 @@ export default function QuoteForm() {
                       )}
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Quantity <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -455,7 +541,7 @@ export default function QuoteForm() {
                       )}
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Finish <span className="text-red-500">*</span>
                       </label>
                       <select
@@ -476,7 +562,7 @@ export default function QuoteForm() {
                       )}
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Height (in) <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -502,7 +588,7 @@ export default function QuoteForm() {
                       )}
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         Width (in) <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -528,7 +614,7 @@ export default function QuoteForm() {
                       )}
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">Custom Design</label>
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">Custom Design</label>
                       <input
                         type="text"
                         placeholder="Describe custom design, if any"
@@ -538,7 +624,7 @@ export default function QuoteForm() {
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-brown-600 mb-1.5">Notes</label>
+                      <label className="block text-xs font-medium text-secondary-600 mb-1.5">Notes</label>
                       <input
                         type="text"
                         placeholder="Optional"
@@ -554,7 +640,7 @@ export default function QuoteForm() {
               <button
                 type="button"
                 onClick={addDoor}
-                className="flex items-center gap-2 text-sm font-medium text-bronze-600 hover:text-bronze-700 py-2.5 px-4 rounded-xl border border-bronze-300/50 bg-white hover:bg-ivory-50 transition-all"
+                className="flex items-center gap-2 text-sm font-medium text-secondary-600 hover:text-secondary-700 py-2.5 px-4 rounded-xl border border-secondary-300/50 bg-white hover:bg-primary-50 transition-all"
               >
                 <Plus size={16} /> Add Another Item
               </button>
@@ -563,10 +649,10 @@ export default function QuoteForm() {
 
           {step === 3 && (
             <div className="p-6 sm:p-10">
-              <h3 className="font-serif text-xl font-bold text-brown-900 mb-6">Project Details</h3>
+              <h3 className="font-serif text-xl font-bold text-secondary-900 mb-6">Project Details</h3>
 
               <div className="mb-8">
-                <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-3">
+                <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-3">
                   Project Type *
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -580,8 +666,8 @@ export default function QuoteForm() {
                       }}
                       className={`py-2.5 px-4 rounded-xl border text-sm font-medium transition-all ${
                         project.type === type
-                          ? 'border-bronze-400 bg-bronze-400/10 text-bronze-700'
-                          : 'border-warm bg-ivory-50 text-brown-600 hover:border-bronze-300'
+                          ? 'border-secondary-400 bg-secondary-400/10 text-secondary-700'
+                          : 'border-warm bg-primary-50 text-secondary-600 hover:border-secondary-300'
                       }`}
                     >
                       {type}
@@ -592,7 +678,7 @@ export default function QuoteForm() {
               </div>
 
               <div className="mb-8">
-                <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-3">
+                <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-3">
                   Timeline *
                 </label>
                 <div className="space-y-2">
@@ -606,8 +692,8 @@ export default function QuoteForm() {
                       }}
                       className={`w-full text-left py-2.5 px-4 rounded-xl border text-sm transition-all ${
                         project.timeline === tl
-                          ? 'border-bronze-400 bg-bronze-400/10 text-bronze-700'
-                          : 'border-warm bg-ivory-50 text-brown-600 hover:border-bronze-300'
+                          ? 'border-secondary-400 bg-secondary-400/10 text-secondary-700'
+                          : 'border-warm bg-primary-50 text-secondary-600 hover:border-secondary-300'
                       }`}
                     >
                       {tl}
@@ -618,7 +704,7 @@ export default function QuoteForm() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-brown-600 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-secondary-600 uppercase tracking-wider mb-2">
                   Additional Requirements
                 </label>
                 <textarea
@@ -637,47 +723,45 @@ export default function QuoteForm() {
               type="button"
               onClick={prev}
               disabled={step === 0}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-brown-600 border border-warm bg-white hover:bg-ivory-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-secondary-600 border border-warm bg-white hover:bg-primary-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeft size={16} /> Back
             </button>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               {step < 3 ? (
                 <button
                   type="button"
                   onClick={next}
-                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-gold hover:opacity-90 transition-all"
+                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-secondary hover:opacity-90 transition-all"
                 >
                   Continue <ChevronRight size={16} />
                 </button>
               ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (validateStep(3)) setSubmitted(true);
-                  }}
-                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-gold hover:opacity-90 transition-all"
-                >
-                  Submit Quote <CheckCircle size={16} />
-                </button>
+                <>
+                  <button
+                    type="button"
+                    onClick={submitQuoteViaAPI}
+                    disabled={isSubmitting}
+                    className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-secondary hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed transition-all flex-1"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit Quote'} <CheckCircle size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={sendWhatsAppQuote}
+                    className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-all flex-1"
+                  >
+                    <MessageCircle size={16} /> WhatsApp
+                  </button>
+                </>
               )}
             </div>
           </div>
-        </div>
-
-        <div className="mt-10 text-center">
-          <p className="text-brown-600 text-sm mb-5 leading-relaxed">
-            Prefer WhatsApp? Send your complete custom quote instantly.
-          </p>
-          <button
-            type="button"
-            onClick={sendWhatsAppQuote}
-            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-white gradient-gold shadow-bronze hover:opacity-90 transition-all"
-          >
-            <MessageCircle size={20} />
-            Send Custom Quote on WhatsApp
-          </button>
-          <p className="text-xs text-brown-600/60 mt-3">Includes name, products, sizes (inches), finish & project details</p>
+          {submissionError && (
+            <div className="px-6 sm:px-10 py-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {submissionError}
+            </div>
+          )}
         </div>
       </div>
     </section>

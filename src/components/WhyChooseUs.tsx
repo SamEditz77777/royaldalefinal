@@ -35,22 +35,22 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section id="why-us" className="py-24 px-4 sm:px-6 lg:px-8 bg-beige-100">
+    <section id="why-us" className="py-24 px-4 sm:px-6 lg:px-8 bg-primary-100">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <p className="text-bronze-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Why Royal Dale</p>
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-brown-900 mb-6 leading-tight">
+            <p className="text-secondary-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Why Royal Dale</p>
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
               Built Different.
               <br />
               Built Better.
             </h2>
-            <p className="text-brown-600 text-lg leading-relaxed mb-8">
-              Manufacturing premium doors since 2018, Royal Dale has become the trusted name for architects and
+            <p className="text-secondary-600 text-lg leading-relaxed mb-8">
+              Production premium doors since 2018, Royal Dale has become the trusted name for architects and
               builders across India. We combine industrial precision with artisanal attention to detail.
             </p>
 
-            <span className="inline-flex px-5 py-2.5 rounded-full text-sm font-medium text-bronze-700 bg-bronze-400/10 border border-bronze-400/25">
+            <span className="inline-flex px-5 py-2.5 rounded-full text-sm font-medium text-secondary-700 bg-secondary-400/10 border border-secondary-400/25">
               Proudly Made in India
             </span>
           </div>
@@ -59,14 +59,14 @@ export default function WhyChooseUs() {
             <div className="rounded-2xl overflow-hidden shadow-warm aspect-[4/3]">
               <img
                 src="https://images.pexels.com/photos/6444254/pexels-photo-6444254.jpeg?auto=compress&cs=tinysrgb&w=800&q=80"
-                alt="Royal Dale manufacturing"
+                alt="Royal Dale production"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-soft px-6 py-4 border border-warm">
-              <div className="font-serif text-3xl font-bold text-bronze-600">6+</div>
-              <div className="text-xs text-brown-600">Years Experience</div>
+              <div className="font-serif text-3xl font-bold text-secondary-600">6+</div>
+              <div className="text-xs text-secondary-600">Years Experience</div>
             </div>
           </div>
         </div>
@@ -75,13 +75,13 @@ export default function WhyChooseUs() {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="bg-white rounded-2xl p-7 border border-warm shadow-soft hover:shadow-bronze transition-all duration-300"
+              className="bg-white rounded-2xl p-7 border border-warm shadow-soft hover:shadow-secondary transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-xl bg-beige-200 flex items-center justify-center mb-5">
-                <feature.icon size={22} className="text-bronze-600" />
+              <div className="w-12 h-12 rounded-xl bg-primary-200 flex items-center justify-center mb-5">
+                <feature.icon size={22} className="text-secondary-600" />
               </div>
-              <h3 className="font-serif text-lg font-bold text-brown-900 mb-2">{feature.title}</h3>
-              <p className="text-sm text-brown-600 leading-relaxed">{feature.description}</p>
+              <h3 className="font-serif text-lg font-bold text-secondary-900 mb-2">{feature.title}</h3>
+              <p className="text-sm text-secondary-600 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>

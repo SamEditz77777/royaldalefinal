@@ -28,12 +28,12 @@ const contactInfo = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-ivory-100">
+    <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-primary-100">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-bronze-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Get in Touch</p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-brown-900 mb-5">Contact Us</h2>
-          <p className="text-brown-600 text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-secondary-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Get in Touch</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-secondary-900 mb-5">Contact Us</h2>
+          <p className="text-secondary-600 text-lg max-w-xl mx-auto leading-relaxed">
             Visit our facility or reach out through any of the channels below.
           </p>
         </div>
@@ -42,10 +42,10 @@ export default function Contact() {
           <div className="grid sm:grid-cols-2 gap-5">
             {contactInfo.map((item) => (
               <div key={item.title} className="bg-white rounded-2xl p-6 border border-warm shadow-soft">
-                <item.icon size={24} className="text-bronze-600 mb-4" />
-                <h3 className="text-sm font-semibold text-brown-800 uppercase tracking-wider mb-2">{item.title}</h3>
+                <item.icon size={24} className="text-secondary-600 mb-4" />
+                <h3 className="text-sm font-semibold text-secondary-800 uppercase tracking-wider mb-2">{item.title}</h3>
                 {item.href ? (
-                  <a href={item.href} className="text-brown-600 text-sm hover:text-bronze-600 transition-colors block">
+                  <a href={item.href} className="text-secondary-600 text-sm hover:text-secondary-600 transition-colors block">
                     {item.lines.map((line, i) => (
                       <span key={i} className="block">
                         {line}
@@ -54,7 +54,7 @@ export default function Contact() {
                   </a>
                 ) : (
                   item.lines.map((line, i) => (
-                    <p key={i} className="text-brown-600 text-sm">
+                    <p key={i} className="text-secondary-600 text-sm">
                       {line}
                     </p>
                   ))

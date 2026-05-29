@@ -1,0 +1,62 @@
+[
+  {
+    "contact": {
+      "name": "lee",
+      "company": "lee enterprises",
+      "email": "lakshyasaklecha96@gmail.com",
+      "phone": "+917828640552"
+    },
+    "selectedProducts": [
+      "laminate"
+    ],
+    "doors": [
+      {
+        "id": "d9aebfd1-8263-42ff-b167-f6701f3c0f1d",
+        "product": "Lamination Doors",
+        "quantity": 10,
+        "heightInch": 80,
+        "widthInch": 32,
+        "finish": "Matte",
+        "customDesign": "Royal crown detailed",
+        "notes": ""
+      }
+    ],
+    "project": {
+      "type": "Residential",
+      "timeline": "Immediate (1-2 weeks)",
+      "notes": "No"
+    },
+    "id": 1780037325994,
+    "submittedAt": "2026-05-29T06:48:45.994Z"
+  },
+  {
+    "contact": {
+      "name": "Naitik Saklecha",
+      "company": "naitikk",
+      "email": "naitiksaklecha070@gmail.com",
+      "phone": "+918830177922"
+    },
+    "selectedProducts": [
+      "lamination"
+    ],
+    "doors": [
+      {
+        "id": "1960ec32-d872-4fe4-bc66-7223ab129123",
+        "product": "Lamination Doors",
+        "quantity": 10,
+        "heightInch": 80,
+        "widthInch": 32,
+        "finish": "Matte",
+        "customDesign": "no",
+        "notes": "no"
+      }
+    ],
+    "project": {
+      "type": "Other",
+      "timeline": "Future (3+ months)",
+      "notes": "noo"
+    },
+    "id": 1780037629299,
+    "submittedAt": "2026-05-29T06:53:49.299Z"
+  }
+]

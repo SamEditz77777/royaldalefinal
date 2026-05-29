@@ -1,70 +1,70 @@
 const products = [
   {
     name: 'Laminate Doors',
-    description: 'High-pressure laminate with premium woodgrain and solid finishes.',
+    description: 'High-pressure laminate doors with premium woodgrain textures and durable surface coating.',
     tag: 'Bestseller',
-    image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'Lamination Doors',
-    description: 'Factory-laminated doors with consistent color and flawless edges.',
+    description: 'Seamless factory-laminated doors for consistent color, edge finish, and long-lasting quality.',
     tag: 'Popular',
-    image: 'https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/315558/pexels-photo-315558.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'FRP Doors',
-    description: 'Fiber reinforced polymer—waterproof, durable, and industrial-grade.',
+    description: 'Fiber reinforced polymer doors designed for moisture resistance, hygiene, and industrial use.',
     tag: 'Industrial',
-    image: 'https://images.pexels.com/photos/8131623/pexels-photo-8131623.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'PVC Doors',
-    description: 'Lightweight, moisture-resistant—ideal for bathrooms and wet areas.',
+    description: 'Waterproof PVC doors ideal for bathrooms, kitchens and high-moisture spaces.',
     tag: 'Waterproof',
-    image: 'https://images.pexels.com/photos/7134780/pexels-photo-7134780.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'WPC Doors',
-    description: 'Wood-plastic composite with natural look and lasting performance.',
+    description: 'Wood-plastic composite doors with a natural wood look and excellent durability.',
     tag: 'Eco-Friendly',
-    image: 'https://images.pexels.com/photos/5824512/pexels-photo-5824512.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/926241/pexels-photo-926241.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'Gel Coated Doors',
-    description: 'High-gloss gel coat finish for a sleek, luxury appearance.',
+    description: 'High-gloss gel-coated doors with a sleek finish for premium interiors.',
     tag: 'Premium',
-    image: 'https://images.pexels.com/photos/6444254/pexels-photo-6444254.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/4000913/pexels-photo-4000913.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'Laminates',
-    description: 'Decorative laminates in woodgrain, marble, and contemporary solids.',
+    description: 'Decorative laminate sheets in woodgrain, stone, and solid finishes for panels and doors.',
     tag: 'Decorative',
-    image: 'https://images.pexels.com/photos/4061622/pexels-photo-4061622.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/822068/pexels-photo-822068.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'Plywood',
-    description: 'Marine and commercial grade plywood for construction and interiors.',
+    description: 'Premium plywood boards for furniture, doors, and structural use.',
     tag: 'Structural',
-    image: 'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/259915/pexels-photo-259915.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
   {
     name: 'Lipping Patti',
-    description: 'Premium wooden edge banding strips for refined door finishing.',
+    description: 'Edge banding strips for clean, durable door edges and premium finish.',
     tag: 'Accessory',
-    image: 'https://images.pexels.com/photos/159045/pexels-photo-159045.jpeg?auto=compress&cs=tinysrgb&w=600&q=80',
+    image: 'https://images.pexels.com/photos/1370499/pexels-photo-1370499.jpeg?auto=compress&cs=tinysrgb&w=900&q=80',
   },
 ];
 
 const tagColors: Record<string, string> = {
-  Bestseller: 'bg-bronze-500/15 text-bronze-700',
-  Popular: 'bg-gold-400/15 text-gold-600',
-  Industrial: 'bg-brown-600/10 text-brown-800',
-  Waterproof: 'bg-bronze-400/10 text-bronze-700',
-  Premium: 'bg-gold-400/15 text-gold-600',
-  'Eco-Friendly': 'bg-bronze-300/20 text-bronze-700',
-  Structural: 'bg-beige-300/50 text-brown-800',
-  Decorative: 'bg-bronze-400/10 text-bronze-700',
-  Accessory: 'bg-beige-300/50 text-brown-700',
+  Bestseller: 'bg-secondary-500/15 text-secondary-700',
+  Popular: 'bg-secondary-100 text-secondary-700',
+  Industrial: 'bg-secondary-50 text-secondary-800',
+  Waterproof: 'bg-secondary-400/10 text-secondary-700',
+  Premium: 'bg-secondary-100 text-secondary-700',
+  'Eco-Friendly': 'bg-secondary-300/20 text-secondary-700',
+  Structural: 'bg-primary-300/50 text-secondary-800',
+  Decorative: 'bg-secondary-400/10 text-secondary-700',
+  Accessory: 'bg-primary-300/50 text-secondary-700',
 };
 
 export default function Products() {
@@ -73,14 +73,14 @@ export default function Products() {
   };
 
   return (
-    <section id="products" className="py-24 px-4 sm:px-6 lg:px-8 bg-ivory-100">
+    <section id="products" className="py-24 px-4 sm:px-6 lg:px-8 bg-primary-100">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-bronze-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Our Products</p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-brown-900 mb-5">
+          <p className="text-secondary-600 font-medium text-sm uppercase tracking-[0.2em] mb-4">Our Products</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-secondary-900 mb-5">
             Crafted for Every Space
           </h2>
-          <p className="text-brown-600 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-secondary-600 text-lg max-w-2xl mx-auto leading-relaxed">
             From residential homes to industrial facilities—premium doors and materials for every requirement.
           </p>
         </div>
@@ -89,20 +89,20 @@ export default function Products() {
           {products.map((product) => (
             <article
               key={product.name}
-              className="group bg-white rounded-2xl overflow-hidden border border-warm shadow-soft hover:shadow-bronze transition-all duration-400 cursor-pointer"
+              className="group bg-white rounded-2xl overflow-hidden border border-warm shadow-soft hover:shadow-secondary transition-all duration-400 cursor-pointer"
               onClick={scrollToQuote}
               onKeyDown={(e) => e.key === 'Enter' && scrollToQuote()}
               role="button"
               tabIndex={0}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-beige-200">
+              <div className="relative aspect-[4/3] overflow-hidden bg-primary-200">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brown-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span
                   className={`absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${tagColors[product.tag]}`}
                 >
@@ -110,10 +110,10 @@ export default function Products() {
                 </span>
               </div>
               <div className="p-6">
-                <h3 className="font-serif text-xl font-bold text-brown-900 mb-2 group-hover:text-bronze-600 transition-colors">
+                <h3 className="font-serif text-xl font-bold text-secondary-900 mb-2 group-hover:text-secondary-600 transition-colors">
                   {product.name}
                 </h3>
-                <p className="text-sm text-brown-600 leading-relaxed">{product.description}</p>
+                <p className="text-sm text-secondary-600 leading-relaxed">{product.description}</p>
               </div>
             </article>
           ))}
@@ -122,7 +122,7 @@ export default function Products() {
         <div className="text-center mt-16">
           <button
             onClick={scrollToQuote}
-            className="px-10 py-3.5 rounded-full font-semibold text-white gradient-gold shadow-bronze hover:opacity-90 transition-all"
+            className="px-10 py-3.5 rounded-full font-semibold text-white gradient-secondary shadow-secondary hover:opacity-90 transition-all"
           >
             Request Custom Quote
           </button>

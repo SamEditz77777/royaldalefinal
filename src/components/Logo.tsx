@@ -3,9 +3,9 @@ export const LOGO_ICON_SRC = '/royaldale-icon.png';
 type LogoProps = {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
-  /** Show “Manufacturing Since 2018” under the wordmark */
+  /** Show “Production Since 2018” under the wordmark */
   showTagline?: boolean;
-  /** Light text for bronze/dark sections */
+  /** Light text for dark sections */
   onDark?: boolean;
 };
 
@@ -27,8 +27,8 @@ export default function Logo({
   showTagline = false,
   onDark = false,
 }: LogoProps) {
-  const wordmarkColor = onDark ? 'text-white' : 'text-bronze-600';
-  const taglineColor = onDark ? 'text-ivory-100/80' : 'text-brown-600';
+  const wordmarkColor = onDark ? 'text-white' : 'text-secondary-700';
+  const taglineColor = onDark ? 'text-primary-100/80' : 'text-secondary-600';
 
   return (
     <div className={`flex items-center gap-2.5 sm:gap-3 min-w-0 ${className}`}>
@@ -53,7 +53,7 @@ export default function Logo({
         </span>
         {showTagline && (
           <span className={`text-[10px] sm:text-xs tracking-[0.14em] mt-1.5 hidden sm:block ${taglineColor}`}>
-            Manufacturing Since 2018
+            Production Since 2018
           </span>
         )}
       </div>
