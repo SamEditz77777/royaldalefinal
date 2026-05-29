@@ -15,7 +15,7 @@ const products = [
     name: 'FRP Doors',
     description: 'Fiber reinforced polymer doors designed for moisture resistance, hygiene, and industrial use.',
     tag: 'Industrial',
-    image: 'https://i0.wp.com/fibroplast.co.in/wp-content/uploads/2022/12/frp-door-4.webp?fit=960%2C600&ssl=1',
+    image: 'frp.jpeg',
   },
   {
     name: 'PVC Doors',
