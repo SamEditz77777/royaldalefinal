@@ -54,7 +54,7 @@ export default function Hero() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-warm aspect-[4/3]">
               <img
-                src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900&q=85"
+                src="public/home.png"
                 alt="Premium interior door"
                 className="w-full h-full object-cover"
               />

@@ -16,14 +16,20 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleNavClick = (href: string) => {
     setMenuOpen(false);
+
     const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -37,34 +43,41 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-[4.5rem]">
+
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
               }}
               className="flex items-center min-w-0 flex-shrink-0"
-              aria-label="ROYALDALE — Home"
+              aria-label="ROYALDALE Home"
             >
-              <Logo size="sm" showTagline />
+              <Logo size="md" />
             </a>
 
             <div className="hidden lg:flex items-center gap-8">
+
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-secondary-700 hover:text-secondary-600 transition-colors duration-200"
+                  className="text-sm font-medium text-secondary-700 hover:text-secondary-600 transition-colors"
                 >
                   {link.label}
                 </button>
               ))}
+
               <button
                 onClick={() => handleNavClick('#quote')}
                 className="px-5 py-2.5 rounded-full text-sm font-semibold gradient-secondary text-white shadow-secondary hover:opacity-90 transition-all duration-200"
               >
                 Request Quote
               </button>
+
               <a
                 href={`tel:${PHONE_TEL}`}
                 className="flex items-center gap-2 text-sm font-medium text-secondary-700 hover:text-secondary-600 whitespace-nowrap"
@@ -72,6 +85,7 @@ export default function Navbar() {
                 <Phone size={16} />
                 {PHONE_DISPLAY}
               </a>
+
             </div>
 
             <button
@@ -81,6 +95,7 @@ export default function Navbar() {
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
+
           </div>
         </div>
       </nav>
@@ -88,6 +103,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="fixed top-16 left-0 right-0 z-40 bg-primary-50 border-b border-warm shadow-soft lg:hidden max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="px-4 py-6 flex flex-col gap-1">
+
             {navLinks.map((link) => (
               <button
                 key={link.href}
@@ -97,12 +113,14 @@ export default function Navbar() {
                 {link.label}
               </button>
             ))}
+
             <button
               onClick={() => handleNavClick('#quote')}
               className="mt-4 w-full py-3.5 rounded-full font-semibold gradient-secondary text-white"
             >
               Request Quote
             </button>
+
             <a
               href={`tel:${PHONE_TEL}`}
               className="flex items-center justify-center gap-2 text-sm text-secondary-600 mt-4 py-2"
@@ -110,6 +128,7 @@ export default function Navbar() {
               <Phone size={16} />
               {PHONE_DISPLAY}
             </a>
+
           </div>
         </div>
       )}
