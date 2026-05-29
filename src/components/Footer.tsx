@@ -43,6 +43,13 @@ export default function Footer() {
               Request Free Quote <ArrowRight size={16} />
             </button>
             <a
+              href="/royaldale-catalog.pdf"
+              download
+              className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-semibold text-secondary-800 bg-white hover:bg-primary-50 transition-all shadow-soft"
+            >
+              <Download size={18} /> Download Catalog
+            </a>
+            <a
               href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
@@ -64,7 +71,8 @@ export default function Footer() {
               Premium door production for residential, commercial, and industrial projects across India.
             </p>
             <a
-              href="#"
+              href="/royaldale-catalog.pdf"
+              download
               className="inline-flex items-center gap-2 text-sm text-secondary-600 hover:text-secondary-700 transition-colors"
             >
               <Download size={16} /> Download Catalog (PDF)
