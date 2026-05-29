@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle, Download } from 'lucide-react';
 import { whatsappUrl, WHATSAPP_GREETING } from '../constants';
 
 export default function Hero() {
@@ -31,6 +31,14 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="/royaldale-catalog.pdf"
+                download
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-secondary-800 bg-white border border-warm hover:border-secondary-400 shadow-soft transition-all"
+              >
+                <Download size={18} className="text-secondary-600" />
+                Download Catalog
+              </a>
               <button
                 onClick={scrollToQuote}
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-white gradient-secondary shadow-secondary hover:opacity-90 transition-all"
