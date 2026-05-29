@@ -56,28 +56,25 @@ export default function Navbar() {
               className="flex items-center min-w-0 flex-shrink-0"
               aria-label="ROYALDALE Home"
             >
-              <Logo size="md" />
+              <Logo size="lg" />
             </a>
 
             <div className="hidden lg:flex items-center gap-8">
-
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-secondary-700 hover:text-secondary-600 transition-colors"
+                  className="text-sm font-medium text-secondary-700 hover:text-secondary-600 transition-colors duration-200"
                 >
                   {link.label}
                 </button>
               ))}
-
               <button
                 onClick={() => handleNavClick('#quote')}
                 className="px-5 py-2.5 rounded-full text-sm font-semibold gradient-secondary text-white shadow-secondary hover:opacity-90 transition-all duration-200"
               >
                 Request Quote
               </button>
-
               <a
                 href={`tel:${PHONE_TEL}`}
                 className="flex items-center gap-2 text-sm font-medium text-secondary-700 hover:text-secondary-600 whitespace-nowrap"
@@ -85,7 +82,6 @@ export default function Navbar() {
                 <Phone size={16} />
                 {PHONE_DISPLAY}
               </a>
-
             </div>
 
             <button

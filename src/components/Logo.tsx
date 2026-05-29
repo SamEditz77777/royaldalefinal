@@ -8,15 +8,15 @@ type LogoProps = {
 };
 
 const iconSize = {
-  sm: 'h-10 w-10 sm:h-11 sm:w-11',
-  md: 'h-12 w-12 sm:h-14 sm:w-14',
-  lg: 'h-14 w-14 sm:h-16 sm:w-16',
+  sm: 'h-12 w-12 sm:h-14 sm:w-14',
+  md: 'h-16 w-16 sm:h-18 sm:w-18',
+  lg: 'h-20 w-20 sm:h-24 sm:w-24',
 };
 
 const wordmarkSize = {
-  sm: 'text-base sm:text-lg',
-  md: 'text-lg sm:text-xl',
-  lg: 'text-xl sm:text-2xl',
+  sm: 'text-lg sm:text-xl',
+  md: 'text-2xl sm:text-3xl',
+  lg: 'text-3xl sm:text-4xl',
 };
 
 export default function Logo({

@@ -78,8 +78,6 @@ export default function QuoteForm() {
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionError, setSubmissionError] = useState('');
 
   const [contact, setContact] = useState({ name: '', company: '', email: '', phone: '' });
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -193,52 +191,6 @@ export default function QuoteForm() {
     window.open(whatsappUrl(message), '_blank');
   };
 
-  const submitQuoteViaAPI = async () => {
-    if (!validateStep(3)) return;
-
-    setIsSubmitting(true);
-    setSubmissionError('');
-
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/quote/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contact,
-          selectedProducts,
-          doors,
-          project,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to submit quote');
-      }
-
-      setSubmitted(true);
-      // Reset form after successful submission
-      setTimeout(() => {
-        setSubmitted(false);
-        setStep(0);
-        setContact({ name: '', company: '', email: '', phone: '' });
-        setSelectedProducts([]);
-        setDoors([emptyDoor()]);
-        setProject({ type: '', timeline: '', notes: '' });
-        setSubmissionError('');
-      }, 3000);
-    } catch (error) {
-      setSubmissionError(
-        error instanceof Error
-          ? error.message
-          : 'An error occurred. Please try WhatsApp instead.',
-      );
-      console.error('Quote submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const inputCls = (err?: string) =>
     `w-full bg-white border rounded-xl px-4 py-3 text-secondary-800 placeholder-secondary-600/50 text-sm focus:outline-none focus:border-secondary-400 focus:ring-1 focus:ring-secondary-400/30 transition-all ${
@@ -417,7 +369,7 @@ export default function QuoteForm() {
                     <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-600/40" />
                     <input
                       type="tel"
-                      placeholder="+91 9697830830"
+                      placeholder="Enter phone number"
                       value={contact.phone}
                       onChange={(e) => {
                         setContact((c) => ({ ...c, phone: e.target.value }));
@@ -727,41 +679,24 @@ export default function QuoteForm() {
             >
               <ChevronLeft size={16} /> Back
             </button>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              {step < 3 ? (
-                <button
-                  type="button"
-                  onClick={next}
-                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-secondary hover:opacity-90 transition-all"
-                >
-                  Continue <ChevronRight size={16} />
-                </button>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={submitQuoteViaAPI}
-                    disabled={isSubmitting}
-                    className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-secondary hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed transition-all flex-1"
-                  >
-                    {isSubmitting ? 'Submitting...' : 'Submit Quote'} <CheckCircle size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={sendWhatsAppQuote}
-                    className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-all flex-1"
-                  >
-                    <MessageCircle size={16} /> WhatsApp
-                  </button>
-                </>
-              )}
-            </div>
+            {step < 3 ? (
+              <button
+                type="button"
+                onClick={next}
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white gradient-secondary hover:opacity-90 transition-all w-full sm:w-auto"
+              >
+                Continue <ChevronRight size={16} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={sendWhatsAppQuote}
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-all w-full sm:w-auto"
+              >
+                <MessageCircle size={16} /> Submit Quote on WhatsApp
+              </button>
+            )}
           </div>
-          {submissionError && (
-            <div className="px-6 sm:px-10 py-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {submissionError}
-            </div>
-          )}
         </div>
       </div>
     </section>
