@@ -34,6 +34,7 @@ const productOptions = [
 ];
 
 const finishOptions = ['Woodgrain', 'Matte', 'High Gloss', 'Texture', 'Plain', 'Custom'];
+const frpColorOptions = ['Brown', 'Golden Brown', 'Teak Wood', 'White', 'Off White', 'Ivory', 'Grey', 'Customize Color'];
 const fractionOptions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8'];
 const projectTypeOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Other'];
 const timelineOptions = ['Immediate (1-2 weeks)', 'Soon (2-4 weeks)', 'Planning (1-3 months)', 'Future (3+ months)'];
@@ -48,6 +49,7 @@ interface DoorItem {
   widthFraction: string;
   finish: string;
   color: string;
+  customColor: string;
   customDesign: string;
   notes: string;
 }
@@ -62,6 +64,7 @@ const emptyDoor = (): DoorItem => ({
   widthFraction: '',
   finish: '',
   color: '',
+  customColor: '',
   customDesign: '',
   notes: '',
 });
@@ -75,6 +78,9 @@ const validateDoorItems = (items: DoorItem[]): Record<string, string> => {
     const needsColor = door.product === 'FRP Doors' || door.product === 'PVC Doors';
     if (needsColor) {
       if (!door.color.trim()) doorErrors[key('color')] = 'Color is required';
+      if (door.product === 'FRP Doors' && door.color === 'Customize Color' && !door.customColor.trim()) {
+        doorErrors[key('color')] = 'Custom color is required';
+      }
     } else if (!door.finish.trim()) {
       doorErrors[key('finish')] = 'Finish is required';
     }
@@ -186,7 +192,8 @@ export default function QuoteForm() {
       lines.push(`   Height: ${heightLabel}`);
       lines.push(`   Width: ${widthLabel}`);
       if (needsColor) {
-        lines.push(`   Color: ${d.color}`);
+        const colorLabel = d.product === 'FRP Doors' && d.color === 'Customize Color' ? `Customize Color (${d.customColor})` : d.color;
+        lines.push(`   Color: ${colorLabel}`);
       } else {
         lines.push(`   Finish: ${d.finish}`);
       }
@@ -514,7 +521,37 @@ export default function QuoteForm() {
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">
                         {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? 'Color' : 'Finish'} <span className="text-red-500">*</span>
                       </label>
-                      {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? (
+                      {door.product === 'FRP Doors' ? (
+                        <>
+                          <select
+                            required
+                            value={door.color}
+                            onChange={(e) => {
+                              updateDoor(door.id, 'color', e.target.value);
+                              if (e.target.value !== 'Customize Color') {
+                                updateDoor(door.id, 'customColor', '');
+                              }
+                            }}
+                            className={selectCls(errors[`door-${door.id}-color`])}
+                          >
+                            <option value="">Select color</option>
+                            {frpColorOptions.map((color) => (
+                              <option key={color} value={color}>
+                                {color}
+                              </option>
+                            ))}
+                          </select>
+                          {door.color === 'Customize Color' && (
+                            <input
+                              type="text"
+                              placeholder="Specify custom color"
+                              value={door.customColor}
+                              onChange={(e) => updateDoor(door.id, 'customColor', e.target.value)}
+                              className={`${inputCls(errors[`door-${door.id}-color`])} mt-3`}
+                            />
+                          )}
+                        </>
+                      ) : door.product === 'PVC Doors' ? (
                         <input
                           type="text"
                           placeholder="Enter color"
