@@ -66,7 +66,7 @@ export default function Contact() {
           <div className="rounded-2xl overflow-hidden border border-warm shadow-soft min-h-[320px]">
             <iframe
               title="ROYAL DALE Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121058.92867970682!2d73.79292787910156!3d18.5248704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828dad55fd8e1e5!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.6252257433016!2d73.92575067334926!3d18.455317771167852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eb77fdf8d09b%3A0x172108facaddb667!2sROYALDALE!5e0!3m2!1sen!2sin!4v1780257895517!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: '320px' }}
