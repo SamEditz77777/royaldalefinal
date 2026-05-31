@@ -34,8 +34,7 @@ const productOptions = [
 ];
 
 const finishOptions = ['Woodgrain', 'Matte', 'High Gloss', 'Texture', 'Plain', 'Custom'];
-const gelCoatedFinishOptions = ['Woodgrain', 'Matte', 'Texture'];
-const frpColorOptions = ['Brown', 'Golden Brown', 'Teak Wood', 'White', 'Off White', 'Ivory', 'Grey', 'Customize Color'];
+const doorColorOptions = ['Brown', 'Golden Brown', 'Peak Wood', 'White', 'Off White', 'Ivory', 'Grey', 'Customize Color'];
 const fractionOptions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8'];
 const projectTypeOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Other'];
 const timelineOptions = ['Immediate (1-2 weeks)', 'Soon (2-4 weeks)', 'Planning (1-3 months)', 'Future (3+ months)'];
@@ -76,10 +75,10 @@ const validateDoorItems = (items: DoorItem[]): Record<string, string> => {
     const key = (field: string) => `door-${door.id}-${field}`;
     if (!door.product.trim()) doorErrors[key('product')] = 'Product is required';
     if (!door.quantity || door.quantity < 1) doorErrors[key('quantity')] = 'Quantity is required (minimum 1)';
-    const needsColor = door.product === 'FRP Doors' || door.product === 'PVC Doors';
+    const needsColor = door.product === 'FRP Doors' || door.product === 'PVC Doors' || door.product === 'Gel Coated Doors';
     if (needsColor) {
       if (!door.color.trim()) doorErrors[key('color')] = 'Color is required';
-      if (door.product === 'FRP Doors' && door.color === 'Customize Color' && !door.customColor.trim()) {
+      if ((door.product === 'FRP Doors' || door.product === 'Gel Coated Doors') && door.color === 'Customize Color' && !door.customColor.trim()) {
         doorErrors[key('color')] = 'Custom color is required';
       }
     } else if (!door.finish.trim()) {
@@ -186,14 +185,15 @@ export default function QuoteForm() {
     doors.forEach((d, i) => {
       const heightLabel = `${d.heightInch}${d.heightFraction ? ` ${d.heightFraction}` : ''}"`;
       const widthLabel = `${d.widthInch}${d.widthFraction ? ` ${d.widthFraction}` : ''}"`;
-      const needsColor = d.product === 'FRP Doors' || d.product === 'PVC Doors';
+      const needsColor = d.product === 'FRP Doors' || d.product === 'PVC Doors' || d.product === 'Gel Coated Doors';
+      const customColorValue = (d.product === 'FRP Doors' || d.product === 'Gel Coated Doors') && d.color === 'Customize Color';
 
       lines.push(`${i + 1}. ${d.product}`);
       lines.push(`   Quantity: ${d.quantity}`);
       lines.push(`   Height: ${heightLabel}`);
       lines.push(`   Width: ${widthLabel}`);
       if (needsColor) {
-        const colorLabel = d.product === 'FRP Doors' && d.color === 'Customize Color' ? `Customize Color (${d.customColor})` : d.color;
+        const colorLabel = customColorValue ? `Customize Color (${d.customColor})` : d.color;
         lines.push(`   Color: ${colorLabel}`);
       } else {
         lines.push(`   Finish: ${d.finish}`);
@@ -520,9 +520,9 @@ export default function QuoteForm() {
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-secondary-600 mb-1.5">
-                        {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? 'Color' : 'Finish'} <span className="text-red-500">*</span>
+                        {door.product === 'FRP Doors' || door.product === 'PVC Doors' || door.product === 'Gel Coated Doors' ? 'Color' : 'Finish'} <span className="text-red-500">*</span>
                       </label>
-                      {door.product === 'FRP Doors' ? (
+                      {door.product === 'FRP Doors' || door.product === 'Gel Coated Doors' ? (
                         <>
                           <select
                             required
@@ -536,7 +536,7 @@ export default function QuoteForm() {
                             className={selectCls(errors[`door-${door.id}-color`])}
                           >
                             <option value="">Select color</option>
-                            {frpColorOptions.map((color) => (
+                            {doorColorOptions.map((color) => (
                               <option key={color} value={color}>
                                 {color}
                               </option>
@@ -568,16 +568,18 @@ export default function QuoteForm() {
                           className={selectCls(errors[`door-${door.id}-finish`])}
                         >
                           <option value="">Select finish</option>
-                          {(door.product === 'Gel Coated Doors' ? gelCoatedFinishOptions : finishOptions).map((f) => (
+                          {finishOptions.map((f) => (
                             <option key={f} value={f}>
                               {f}
                             </option>
                           ))}
                         </select>
                       )}
-                      {(door.product === 'FRP Doors' || door.product === 'PVC Doors') ? errors[`door-${door.id}-color`] : errors[`door-${door.id}-finish`] ? (
+                      {(door.product === 'FRP Doors' || door.product === 'PVC Doors' || door.product === 'Gel Coated Doors') ? errors[`door-${door.id}-color`] : errors[`door-${door.id}-finish`] ? (
                         <p className="text-red-500 text-xs mt-1">
-                          {door.product === 'FRP Doors' || door.product === 'PVC Doors' ? errors[`door-${door.id}-color`] : errors[`door-${door.id}-finish`]}
+                          {door.product === 'FRP Doors' || door.product === 'PVC Doors' || door.product === 'Gel Coated Doors'
+                            ? errors[`door-${door.id}-color`]
+                            : errors[`door-${door.id}-finish`]}
                         </p>
                       ) : null}
                     </div>
