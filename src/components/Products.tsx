@@ -27,7 +27,7 @@ const products = [
     name: 'WPC Doors',
     description: 'Wood-plastic composite doors with a natural wood look and excellent durability.',
     tag: 'Eco-Friendly',
-    image: 'https://konarkdoors.com/wp-content/uploads/2024/07/wpc-doors-for-bedroom-colors-design.webp',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJkGm1njmeuGAxo442njf85Ph5KxsdXyu1sg&s',
   },
   {
     name: 'Gel Coated Doors',
@@ -99,7 +99,7 @@ export default function Products() {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${product.name === 'FRP Doors' ? 'object-contain p-4 bg-primary-200' : 'object-cover'}`}
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
