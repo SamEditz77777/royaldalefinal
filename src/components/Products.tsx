@@ -27,7 +27,7 @@ const products = [
     name: 'WPC Doors',
     description: 'Wood-plastic composite doors with a natural wood look and excellent durability.',
     tag: 'Eco-Friendly',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJkGm1njmeuGAxo442njf85Ph5KxsdXyu1sg&s',
+    image: 'https://www.gokulsbuildmart.in/wp-content/uploads/2026/02/UPVC-Vs-WPC-Doors.jpg',
   },
   {
     name: 'Gel Coated Doors',
