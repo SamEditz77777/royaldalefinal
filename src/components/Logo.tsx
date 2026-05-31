@@ -38,7 +38,7 @@ export default function Logo({
       />
 
       <div className="flex flex-col min-w-0 leading-none">
-        <span className={`font-serif font-semibold tracking-[0.18em] uppercase ${wordmarkSize[size]} ${wordmarkColor}`}>
+        <span className={`font-serif font-bold tracking-[0.18em] uppercase ${wordmarkSize[size]} ${wordmarkColor}`}>
           ROYALDALE
         </span>
         {showTagline && (
