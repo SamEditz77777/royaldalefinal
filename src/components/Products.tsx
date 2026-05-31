@@ -3,13 +3,13 @@ const products = [
     name: 'Laminate Doors',
     description: 'High-pressure laminate doors with premium woodgrain textures and durable surface coating.',
     tag: 'Bestseller',
-    image: 'https://www.mikasadoors.com/wp-content/uploads/2022/04/Maintenance-tips-for-Designer-Laminated-door.jpg',
+    image: 'https://images.jdmagicbox.com/quickquotes/images_main/-0elf5yqh.jpg',
   },
   {
     name: 'Lamination Doors',
     description: 'Seamless factory-laminated doors for consistent color, edge finish, and long-lasting quality.',
     tag: 'Popular',
-    image: 'https://images.jdmagicbox.com/quickquotes/images_main/-0elf5yqh.jpg',
+    image: 'https://www.mikasadoors.com/wp-content/uploads/2022/04/Maintenance-tips-for-Designer-Laminated-door.jpg',
   },
   {
     name: 'FRP Doors',
@@ -21,7 +21,7 @@ const products = [
     name: 'PVC Doors',
     description: 'Waterproof PVC doors ideal for bathrooms, kitchens and high-moisture spaces.',
     tag: 'Waterproof',
-    image: 'https://images.jdmagicbox.com/quickquotes/images_main/pvc-door-374224911-a0gp5.jpg',
+    image: 'pvc.jpeg',
   },
   {
     name: 'WPC Doors',
