@@ -268,7 +268,7 @@ export default function QuoteForm() {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
               <p className="text-sm text-blue-800">
-                <strong>Pro Tip:</strong> You can also use WhatsApp for immediate assistance. Save this number: <strong>+91 9697830830</strong>
+                <strong>Pro Tip:</strong> Use WhatsApp for immediate assistance at <strong>+91 9697830830</strong>.
               </p>
             </div>
 

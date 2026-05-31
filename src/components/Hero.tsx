@@ -22,7 +22,7 @@ export default function Hero() {
             <p className="text-secondary-600 font-medium text-sm uppercase tracking-[0.2em] mb-5">
               Premium Door Production Since 2018
             </p>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-secondary-900 leading-[1.12] mb-6">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 leading-tight mb-6">
               Premium Door Solutions for{' '}
               <span className="text-secondary-600">Every Space</span>
             </h1>
