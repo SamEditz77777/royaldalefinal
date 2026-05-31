@@ -34,6 +34,7 @@ const productOptions = [
 ];
 
 const finishOptions = ['Woodgrain', 'Matte', 'High Gloss', 'Texture', 'Plain', 'Custom'];
+const gelCoatedFinishOptions = ['Woodgrain', 'Matte', 'Texture'];
 const frpColorOptions = ['Brown', 'Golden Brown', 'Teak Wood', 'White', 'Off White', 'Ivory', 'Grey', 'Customize Color'];
 const fractionOptions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8'];
 const projectTypeOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Other'];
@@ -567,7 +568,7 @@ export default function QuoteForm() {
                           className={selectCls(errors[`door-${door.id}-finish`])}
                         >
                           <option value="">Select finish</option>
-                          {finishOptions.map((f) => (
+                          {(door.product === 'Gel Coated Doors' ? gelCoatedFinishOptions : finishOptions).map((f) => (
                             <option key={f} value={f}>
                               {f}
                             </option>
