@@ -34,6 +34,7 @@ const productOptions = [
 ];
 
 const finishOptions = ['Woodgrain', 'Matte', 'High Gloss', 'Texture', 'Plain', 'Custom'];
+const gelCoatedFinishOptions = ['Woodgrain', 'Matte', 'Texture'];
 const doorColorOptions = ['Brown', 'Golden Brown', 'Peak Wood', 'White', 'Off White', 'Ivory', 'Grey', 'Customize Color'];
 const fractionOptions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8'];
 const projectTypeOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Other'];
@@ -80,6 +81,9 @@ const validateDoorItems = (items: DoorItem[]): Record<string, string> => {
       if (!door.color.trim()) doorErrors[key('color')] = 'Color is required';
       if ((door.product === 'FRP Doors' || door.product === 'Gel Coated Doors') && door.color === 'Customize Color' && !door.customColor.trim()) {
         doorErrors[key('color')] = 'Custom color is required';
+      }
+      if (door.product === 'Gel Coated Doors' && !door.finish.trim()) {
+        doorErrors[key('finish')] = 'Finish is required';
       }
     } else if (!door.finish.trim()) {
       doorErrors[key('finish')] = 'Finish is required';
@@ -195,6 +199,9 @@ export default function QuoteForm() {
       if (needsColor) {
         const colorLabel = customColorValue ? `Customize Color (${d.customColor})` : d.color;
         lines.push(`   Color: ${colorLabel}`);
+        if (d.product === 'Gel Coated Doors') {
+          lines.push(`   Finish: ${d.finish}`);
+        }
       } else {
         lines.push(`   Finish: ${d.finish}`);
       }
@@ -550,6 +557,29 @@ export default function QuoteForm() {
                               onChange={(e) => updateDoor(door.id, 'customColor', e.target.value)}
                               className={`${inputCls(errors[`door-${door.id}-color`])} mt-3`}
                             />
+                          )}
+                          {door.product === 'Gel Coated Doors' && (
+                            <div className="mt-4">
+                              <label className="block text-xs font-medium text-secondary-600 mb-1.5">
+                                Finish <span className="text-red-500">*</span>
+                              </label>
+                              <select
+                                required
+                                value={door.finish}
+                                onChange={(e) => updateDoor(door.id, 'finish', e.target.value)}
+                                className={selectCls(errors[`door-${door.id}-finish`])}
+                              >
+                                <option value="">Select finish</option>
+                                {gelCoatedFinishOptions.map((f) => (
+                                  <option key={f} value={f}>
+                                    {f}
+                                  </option>
+                                ))}
+                              </select>
+                              {errors[`door-${door.id}-finish`] && (
+                                <p className="text-red-500 text-xs mt-1">{errors[`door-${door.id}-finish`]}</p>
+                              )}
+                            </div>
                           )}
                         </>
                       ) : door.product === 'PVC Doors' ? (
